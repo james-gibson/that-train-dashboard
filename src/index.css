@@ -1,0 +1,51 @@
+@import './components/pouf/pouf.css';
+
+/* Markdown body inside a pouf surface. The copied components own the chrome;
+ * prose is the one place raw elements are legitimate, so they are styled here
+ * rather than wrapped in a component that would need a variant per tag. */
+.prose-pouf {
+  font-size: 16px;
+  line-height: 1.65;
+  color: var(--ink);
+  max-width: 68ch;
+}
+.prose-pouf > * + * { margin-top: var(--s4); }
+.prose-pouf h2 {
+  font-size: 22px;
+  font-weight: 900;
+  letter-spacing: -0.2px;
+  margin-top: var(--s7);
+}
+.prose-pouf h3 { font-size: 18px; font-weight: 800; margin-top: var(--s6); }
+.prose-pouf p { margin: 0; }
+.prose-pouf ul, .prose-pouf ol { padding-left: 1.2em; display: grid; gap: var(--s2); }
+.prose-pouf ul { list-style: disc; }
+.prose-pouf ol { list-style: decimal; }
+.prose-pouf a { color: var(--color-ink); text-decoration: underline; text-underline-offset: 3px; }
+.prose-pouf code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.9em;
+  background: var(--pouf-field);
+  border-radius: 8px;
+  padding: 2px 6px;
+}
+.prose-pouf pre {
+  background: var(--pouf-field);
+  border-radius: var(--radius-control);
+  padding: var(--s4);
+  overflow-x: auto;
+}
+.prose-pouf pre code { background: none; padding: 0; }
+.prose-pouf table { width: 100%; border-collapse: collapse; font-size: 14px; }
+.prose-pouf th, .prose-pouf td {
+  text-align: left;
+  padding: var(--s2) var(--s3);
+  border-bottom: 1px solid color-mix(in oklab, var(--ink) 12%, transparent);
+}
+.prose-pouf th { font-weight: 800; }
+.prose-pouf blockquote {
+  border-left: 4px solid var(--color-mint);
+  padding-left: var(--s4);
+  color: var(--muted);
+}
+.prose-pouf hr { border: 0; border-top: 1px solid color-mix(in oklab, var(--ink) 12%, transparent); }
