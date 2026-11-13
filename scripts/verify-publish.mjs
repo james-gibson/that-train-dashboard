@@ -88,7 +88,30 @@ for (const file of contentFiles) {
   if (!llms.includes(`/${route}/`)) fail('llms', `${route} is not listed in llms.txt`)
 }
 
-// 6. size sanity
+// 6. the upstream rules are vendored, hashed, and overridden on the record
+const { createHash } = await import('node:crypto')
+const rules = await readText('upstream/rules.md')
+const manifest = JSON.parse((await readText('upstream/manifest.json')) || 'null')
+if (!rules) {
+  fail('rules', 'upstream/rules.md is missing — run node scripts/sync-upstream.mjs')
+} else {
+  const ids = new Set([...rules.matchAll(/^- (RULES-\d+):/gm)].map((match) => match[1]))
+  if (!ids.size) fail('rules', 'upstream/rules.md defines no rules')
+  if (!manifest) {
+    fail('rules', 'upstream/manifest.json is missing')
+  } else {
+    const hash = createHash('sha256').update(rules).digest('hex')
+    if (hash !== manifest.sha256) fail('rules', 'upstream/rules.md does not match its manifest hash')
+  }
+  const overrides = await readText('upstream/overrides.md')
+  for (const match of overrides.matchAll(/^- (RULES-\d+):\s*(.+)$/gm)) {
+    if (!ids.has(match[1])) fail('rules', `override names ${match[1]}, which upstream does not define`)
+    if (match[2].trim().length < 20) fail('rules', `override for ${match[1]} has no reason`)
+  }
+  if (!(await readText(join(DIST, 'rules.md')))) fail('rules', 'dist/rules.md is not published')
+}
+
+// 7. size sanity
 const total = (await Promise.all(files.map(async (file) => (await stat(file)).size))).reduce((a, b) => a + b, 0)
 if (total > 8 * 1024 * 1024) fail('size', `dist/ is ${(total / 1024 / 1024).toFixed(1)}MB, over 8MB`)
 notes.push(`${rel.length} files, ${(total / 1024).toFixed(0)}KB total`)

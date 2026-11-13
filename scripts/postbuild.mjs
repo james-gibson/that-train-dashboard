@@ -130,5 +130,18 @@ const llms = [
 ].join('\n')
 await writeFile(join(DIST, 'llms.txt'), llms, 'utf8')
 
+// --- rules.md: what this child actually follows ---------------------------
+// The upstream list, verbatim, plus the overrides this child has recorded. A
+// reader can see which rules are inherited and which are replaced.
+const upstream = await readFile('upstream/rules.md', 'utf8').catch(() => '')
+const overrides = await readFile('upstream/overrides.md', 'utf8').catch(() => '')
+if (upstream) {
+  await writeFile(
+    join(DIST, 'rules.md'),
+    `${upstream}\n## Local overrides\n\n${overrides.replace(/^# Local overrides\n+/, '')}`,
+    'utf8',
+  )
+}
+
 await rm(PRERENDER, { recursive: true, force: true })
 console.log(`postbuild: ${routes.length} shells, 404, sitemap, robots, llms.txt (${pages.length} pages)`)

@@ -24,6 +24,19 @@ components; port the pattern.
 - Status is text, not colour. Unknown is not zero: `Metric` renders `null` as an em dash.
 - The copied source is yours: to change a look, edit the component or add a cva variant.
 
+## Rules: defer to upstream, override on the record
+
+The rules are **the upstream's** — `https://james-gibson.github.io/le.gume/rules.md`, vendored into
+`upstream/rules.md` by `node scripts/sync-upstream.mjs`. Do not copy them into this file; a copy
+drifts and nobody can tell which is current.
+
+When this site must do something different, add a line to `upstream/overrides.md` naming the rule id
+and the reason. The guard refuses an override for a rule upstream does not define, and the build
+publishes the effective list at `/rules.md`.
+
+Sync on a cadence, not once: a child pinned to a version it never updates is following rules that no
+longer exist.
+
 ## Commands
 
 ```bash
