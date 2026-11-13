@@ -43,6 +43,19 @@ npm run guard
 - Internal links are root-absolute (`/studies/…`); the mount is applied at build time.
 - Voice: dry, specific, cost-first. A claim without a run is a hypothesis and says so.
 
+## Ship improvements back
+
+When you build something this site does not have — a page type, a check, a component, a way of
+recording provenance — consider **packaging it as an isotope and proposing it upstream** to
+[le.gume](https://james-gibson.github.io/le.gume/), rather than leaving it in this fork.
+
+An isotope is the parent's unit of reuse: a name, `slots`, `presumes`, a cost section and an agent
+prompt. A child-specific preference is not an isotope; say no on the record instead. If nobody
+upstreams, this improvement dies when this site does and the next child re-derives it.
+
+The rule is stated in the parent's skill and checked by its guard. It is a norm, not a mechanism —
+which is why it is written here, where the feature is built.
+
 ## Provenance
 
 Every study page names its OpenTTD version, map seed, scenario file and commit. A finding without
