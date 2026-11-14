@@ -37,6 +37,14 @@ publishes the effective list at `/rules.md`.
 Sync on a cadence, not once: a child pinned to a version it never updates is following rules that no
 longer exist.
 
+## The context we do not control
+
+Railhead belongs to its authors. The environment as we read it — the pin, the arena limits, the
+verifier's open gaps, the task families — is documented at
+[le.railhead](https://james-gibson.github.io/le.railhead/), which is also where every research change
+is published. A study page states its question, arms and counter-case; the stage and the pin belong in
+that register, not in a second copy here.
+
 ## Commands
 
 ```bash

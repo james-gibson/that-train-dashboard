@@ -32,3 +32,6 @@ as one. A run without a recorded seed, version and scenario is not a run.
 - [The questions](/brief/questions) — what we are actually trying to find out.
 - [How a run works](/ops/how-a-run-works) — the loop, from scenario to review.
 - [What we do not claim](/notes/what-we-do-not-claim) — the limits, stated before anyone asks.
+- [The context we run against](https://james-gibson.github.io/le.railhead/) — the environment, as
+  measured, at a pinned commit. We do not control it; we cite it, and we publish our research
+  changes there.

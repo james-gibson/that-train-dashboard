@@ -12,6 +12,14 @@ different design system.
 - Every route is prerendered, so the page is in the initial HTML.
 - The guard refuses a broken link, a missing shell or a page that never reached `llms.txt`.
 
+## The context we run against
+
+We do not control the environment we study. [le.railhead](https://james-gibson.github.io/le.railhead/)
+is the shared context we publish against: Railhead as it was measured, at a pinned commit, with the
+limits and the verifier's open gaps stated. Our study pages keep the argument; the stage, the pin and
+the log of every research change we publish are kept there, in
+[the register](https://james-gibson.github.io/le.railhead/studies/).
+
 ## What it deliberately is not
 
 No accounts, no analytics, no search, no CMS, no database. The audience reads studies and checks
