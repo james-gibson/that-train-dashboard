@@ -4,6 +4,8 @@
  * prose is the one place raw elements are legitimate, so they are styled here
  * rather than wrapped in a component that would need a variant per tag. */
 .prose-pouf {
+  /* A wide table scrolls inside the prose block, not the page. */
+  overflow-x: auto;
   font-size: 16px;
   line-height: 1.65;
   color: var(--ink);

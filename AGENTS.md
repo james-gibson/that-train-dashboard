@@ -81,3 +81,29 @@ which is why it is written here, where the feature is built.
 
 Every study page names its OpenTTD version, map seed, scenario file and commit. A finding without
 all four is labelled inconclusive rather than softened.
+
+## The rotation record
+
+This seed keeps its own record of update cycles in `upstream/rotations.jsonl` — append-only,
+committed, and the thing that decides whether the next cycle may publish. A **rotation** is one
+verified cycle with a contiguous id (`r000001`); a **departure** is a cycle that did not verify,
+and costs 8 of 80 distance, reset by a rotation. The rungs are 42i's: HEALTHY · MINOR · DEGRADED ·
+COMPROMISED.
+
+```bash
+npm run rotation                      # status: rung, head, distance, rotations per isotope
+npm run rotation -- gate              # the policy CI runs; exits 1 with the repair named
+npm run rotation -- open --isotope rules --note "29d863e -> 41ac0f2"
+npm run rotation -- verify --isotope rules --subject <sha> --gates build,guard
+npm run rotation -- depart --kind guard
+```
+
+`gate` refuses a gap in the ids, an unclosed cycle, and a rung of DEGRADED or worse. The deploy
+workflow runs it before anything else, with a read-only token; it never writes the ledger. The
+state is published at `/rotations.json` and the guard refuses a build where the published state
+disagrees with the ledger.
+
+`npm run rules` is the parent-rule catch-up check, and the workflow runs it on every cycle, so a
+tightened rule in `le.gume` reaches this seed on the next publish rather than whenever someone
+remembers. The published state is the state at build time: a rotation recorded after a build is
+published by the next build, which is CI's.
