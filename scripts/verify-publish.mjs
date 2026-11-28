@@ -135,7 +135,34 @@ if (!published) {
   if (ledger.gaps.length) fail('rotation', `the id sequence has a gap: ${ledger.gaps.join(', ')}`)
 }
 
-// 8. size sanity
+// 8. the publish workflow runs on the current LTS (RULES-10)
+const NODE_LTS_ACTION_MAJORS = {
+  checkout: 5,
+  'setup-node': 5,
+  'configure-pages': 6,
+  'upload-pages-artifact': 5,
+  'deploy-pages': 5,
+  'upload-artifact': 6,
+  'download-artifact': 7,
+}
+let workflowFiles = []
+try {
+  workflowFiles = (await readdir('.github/workflows')).filter((f) => /\.ya?ml$/.test(f))
+} catch {
+  workflowFiles = []
+}
+if (!workflowFiles.length) fail('workflow', 'no .github/workflows/*.yml — the deploy is not checked in')
+for (const name of workflowFiles) {
+  const text = await readText(join('.github/workflows', name))
+  for (const match of text.matchAll(/uses:\s*actions\/([a-z0-9-]+)@v(\d+)/g)) {
+    const minimum = NODE_LTS_ACTION_MAJORS[match[1]]
+    if (minimum && Number(match[2]) < minimum) {
+      fail('workflow', `${name}: actions/${match[1]}@v${match[2]} runs on an older Node; use v${minimum} or later (RULES-10)`)
+    }
+  }
+}
+
+// 9. size sanity
 const total = (await Promise.all(files.map(async (file) => (await stat(file)).size))).reduce((a, b) => a + b, 0)
 if (total > 8 * 1024 * 1024) fail('size', `dist/ is ${(total / 1024 / 1024).toFixed(1)}MB, over 8MB`)
 notes.push(`${rel.length} files, ${(total / 1024).toFixed(0)}KB total`)
